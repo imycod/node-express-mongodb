@@ -59,9 +59,12 @@ http.createServer((req, res) => {
   } else if (pathName === '/product') {
     res.end('This is the product');
   } else {
-    res.writeHead(404)
+    res.writeHead(404, {
+      'Content-Type': 'text/html',
+      'my-own-header': 'hello-world'
+    });
     // 如果不是overview 也不是 product 边界判断
-    res.end('Page Not found');
+    res.end('<h1>Page Not found</h1>');
   }
   // const parsedUrl = url.parse(req.url, true);
   //
