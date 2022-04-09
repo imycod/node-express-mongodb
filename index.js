@@ -1,7 +1,7 @@
 ////////////////////////////////////////
 // FILE
 ////////////////////////////////////////
-// const fs = require('fs');
+const fs = require('fs');
 // const  readStr = fs.readFileSync('./.gitignore', 'utf8');
 // console.log(readStr);
 // const outputStr=`this is what we know about the avocado: \n${readStr} \nCreated by: ${process.env.USER} on ${Date.now()}`;
@@ -52,12 +52,21 @@
 ////////////////////////////////////////
 const http = require('http');
 const url = require('url');
+
+// 程序一开始执行,仅仅执行一次
+const productData = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf8');
+
 http.createServer((req, res) => {
   const pathName = req.url;
   if (pathName === '/' || pathName === '/overview') {
     res.end('This is the overview');
   } else if (pathName === '/product') {
     res.end('This is the product');
+  } else if ('/api') {
+    res.writeHead(200, {
+      'Content-type': 'application/json'
+    });
+    res.end(productData)
   } else {
     res.writeHead(404, {
       'Content-Type': 'text/html',
@@ -66,11 +75,7 @@ http.createServer((req, res) => {
     // 如果不是overview 也不是 product 边界判断
     res.end('<h1>Page Not found</h1>');
   }
-  // const parsedUrl = url.parse(req.url, true);
-  //
-  // res.writeHead(200, {'Content-Type': 'text/html'});
-  // res.write('<h1>Hello World</h1>');
-  // res.end();
+
 }).listen(8080, '127.0.0.1', () => {
   console.log('Server running at http://127.0.0.1:8080/');
 });
