@@ -6,20 +6,26 @@ const fs = require('fs');
 // console.log('file written!');
 
 // Non-blocking , asynchronous way 1.
-fs.readFile('./txt/start.txt', 'utf8', (err, data) => { // nodejs 先读文件 然后立即执行 2.的代码, 当文件彻底读完后才执行 callback函数
+fs.readFile('./txt/start.txt', 'utf8', (err, data1) => { // nodejs 先读文件 然后立即执行 2.的代码, 当文件彻底读完后才执行 callback函数
   if (err) {
     console.log(err);
   } else {
-    const fileNameList = data.split(',');
+    const fileNameList = data1.split(',');
     console.log("fileNameList", fileNameList);
     fileNameList.forEach(fileName => {
-      fs.readFile(`./txt/${fileName.trim()}.txt`, 'utf8', (err, data) => {
+      fs.readFile(`./txt/${fileName.trim()}.txt`, 'utf8', (err, data2) => {
         if (err) {
           console.log(err);
         } else {
-          fs.readFile(`./txt/${data.trim()}.txt`, 'utf8', (err, data) => {
-            if (err) return
-            console.log("data",data);
+          fs.readFile(`./txt/${data2.trim()}.txt`, 'utf8', (err, data3) => {
+            if (err) return;
+            fs.writeFile('./txt/final.txt', `${data1}\n${data2}\n${data3}`, (err) => {
+              if (err) {
+                console.log('writeFile', err);
+              }
+              console.log('your file has been written');
+            });
+            console.log("data3", data3);
           });
         }
       });
