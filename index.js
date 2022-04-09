@@ -58,6 +58,9 @@ http.createServer((req, res) => {
     res.end('This is the overview');
   } else if (pathName === '/product') {
     res.end('This is the product');
+  } else {
+    // 如果不是overview 也不是 product 边界判断
+    res.end('Page Not found');
   }
   // const parsedUrl = url.parse(req.url, true);
   //
